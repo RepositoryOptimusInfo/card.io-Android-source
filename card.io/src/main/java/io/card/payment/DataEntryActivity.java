@@ -361,48 +361,21 @@ public final class DataEntryActivity extends Activity implements TextWatcher {
 
         scrollParams.addRule(RelativeLayout.ABOVE, buttonLayout.getId());
 
+        cancelBtn = new Button(this);
+        addButton(buttonLayout, cancelBtn, LocalizedStrings.getString(StringKey.CANCEL), new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         doneBtn = new Button(this);
-        LinearLayout.LayoutParams doneParam = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1);
-
-        doneBtn.setText(LocalizedStrings.getString(StringKey.DONE));
-        doneBtn.setOnClickListener(new Button.OnClickListener() {
+        addButton(buttonLayout, doneBtn, LocalizedStrings.getString(StringKey.DONE), new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 completed();
             }
         });
 
-        doneBtn.setEnabled(false);
-
-        buttonLayout.addView(doneBtn, doneParam);
-        ViewUtil.styleAsButton(doneBtn, true, this, useApplicationTheme);
-        ViewUtil.setPadding(doneBtn, "5dip", null, "5dip", null);
-        ViewUtil.setMargins(doneBtn, "8dip", "8dip", "8dip", "8dip");
-        if(!useApplicationTheme) {
-            doneBtn.setTextSize(Appearance.TEXT_SIZE_MEDIUM_BUTTON);
-        }
-
-        cancelBtn = new Button(this);
-
-        LinearLayout.LayoutParams cancelParam = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1);
-        cancelBtn.setText(LocalizedStrings.getString(StringKey.CANCEL));
-
-        cancelBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        buttonLayout.addView(cancelBtn, cancelParam);
-        ViewUtil.styleAsButton(cancelBtn, false, this, useApplicationTheme);
-        ViewUtil.setPadding(cancelBtn, "5dip", null, "5dip", null);
-        ViewUtil.setMargins(cancelBtn, "4dip", "8dip", "8dip", "8dip");
-        if(!useApplicationTheme) {
-            cancelBtn.setTextSize(Appearance.TEXT_SIZE_MEDIUM_BUTTON);
-        }
         container.addView(buttonLayout, buttonLayoutParam);
 
         ActivityHelper.addActionBarIfSupported(this);
@@ -423,6 +396,22 @@ public final class DataEntryActivity extends Activity implements TextWatcher {
 
         ActivityHelper.setupActionBarIfSupported(this, activityTitleTextView,
                 LocalizedStrings.getString(StringKey.MANUAL_ENTRY_TITLE), "card.io - ", icon);
+    }
+
+    private void addButton(LinearLayout buttonLayout, Button button, String text, Button.OnClickListener listener) {
+        LinearLayout.LayoutParams cancelParam = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1);
+        button.setText(text);
+
+        button.setOnClickListener(listener);
+
+        buttonLayout.addView(button, cancelParam);
+        ViewUtil.styleAsButton(button, false, this, useApplicationTheme);
+        ViewUtil.setPadding(button, "5dip", null, "5dip", null);
+        ViewUtil.setMargins(button, "4dip", "8dip", "8dip", "8dip");
+        if(!useApplicationTheme) {
+            button.setTextSize(Appearance.TEXT_SIZE_MEDIUM_BUTTON);
+        }
     }
 
     private void completed() {
